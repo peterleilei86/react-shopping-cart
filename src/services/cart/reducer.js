@@ -1,4 +1,9 @@
-import { LOAD_CART, ADD_PRODUCT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY } from './actionTypes';
+import {
+  LOAD_CART,
+  ADD_PRODUCT,
+  REMOVE_PRODUCT,
+  CHANGE_PRODUCT_QUANTITY
+} from './actionTypes';
 
 const initialState = {
   products: []
@@ -12,19 +17,36 @@ export default function(state = initialState, action) {
         products: action.payload
       };
     case ADD_PRODUCT:
+      const product = state.products.find(cp => cp.id === action.payload.id);
+      if (!product) {
+        return {
+          ...state,
+          products: state.products.concat(action.payload)
+        };
+      }
       return {
         ...state,
-        productToAdd: Object.assign({}, action.payload)
+        products: state.products.map(p => {
+          if (p.id === action.payload.id) {
+            return { ...p, quantity: p.quantity + action.payload.quantity };
+          }
+          return p;
+        })
       };
     case REMOVE_PRODUCT:
       return {
         ...state,
-        productToRemove: Object.assign({}, action.payload)
+        products: state.products.filter(p => p.id !== action.payload.id)
       };
     case CHANGE_PRODUCT_QUANTITY:
       return {
         ...state,
-        productToChange: Object.assign({}, action.payload)
+        products: state.products.map(p => {
+          if (p.id === action.payload.id) {
+            return { ...p, quantity: action.payload.quantity };
+          }
+          return p;
+        })
       };
     default:
       return state;

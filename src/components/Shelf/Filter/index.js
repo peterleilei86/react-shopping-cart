@@ -1,58 +1,43 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
-import { connect } from 'react-redux';
-import { updateFilters } from '../../../services/filters/actions';
+import React from 'react';
 import Checkbox from '../../Checkbox';
 import GithubStarButton from '../../github/StarButton';
-
 import './style.scss';
+import { useFilters } from '../../../contexts/Filters';
 
 const availableSizes = ['XS', 'S', 'M', 'ML', 'L', 'XL', 'XXL'];
 
-class Filter extends Component {
-  static propTypes = {
-    updateFilters: PropTypes.func.isRequired,
-    filters: PropTypes.array
-  };
+const Filter = props => {
+  const { updateFilters } = useFilters();
+  const [selected, setSelected] = React.useState(new Set());
 
-  componentDidMount() {
-    this.selectedCheckboxes = new Set();
-  }
-
-  toggleCheckbox = label => {
-    if (this.selectedCheckboxes.has(label)) {
-      this.selectedCheckboxes.delete(label);
+  const toggleCheckbox = label => {
+    if (selected.has(label)) {
+      selected.delete(label);
     } else {
-      this.selectedCheckboxes.add(label);
+      selected.add(label);
     }
-
-    this.props.updateFilters(Array.from(this.selectedCheckboxes));
+    setSelected(selected);
+    updateFilters(Array.from(selected));
   };
 
-  createCheckbox = label => (
+  const createCheckbox = label => (
     <Checkbox
       classes="filters-available-size"
       label={label}
-      handleCheckboxChange={this.toggleCheckbox}
+      handleCheckboxChange={toggleCheckbox}
       key={label}
     />
   );
 
-  createCheckboxes = () => availableSizes.map(this.createCheckbox);
+  const createCheckboxes = () => availableSizes.map(createCheckbox);
 
-  render() {
-    return (
-      <div className="filters">
-        <h4 className="title">Sizes:</h4>
-        {this.createCheckboxes()}
-        <GithubStarButton />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="filters">
+      <h4 className="title">Sizes:</h4>
+      {createCheckboxes()}
+      <GithubStarButton />
+    </div>
+  );
+};
 
-export default connect(
-  null,
-  { updateFilters }
-)(Filter);
+export default Filter;

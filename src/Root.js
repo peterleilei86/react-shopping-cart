@@ -1,10 +1,6 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import AppProviders from './contexts';
 
-import store from './services/store';
-
-const Root = ({ children, initialState = {} }) => (
-  <Provider store={store(initialState)}>{children}</Provider>
-);
+const Root = ({ children }) => <AppProviders>{children}</AppProviders>;
 
 export default Root;

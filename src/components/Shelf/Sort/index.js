@@ -1,9 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import { connect } from 'react-redux';
-import { updateSort } from '../../../services/sort/actions';
 import Selectbox from '../../Selectbox';
+import { useSort } from '../../../contexts/Sort';
 
 const sortBy = [
   { value: '', label: 'Select' },
@@ -11,23 +8,14 @@ const sortBy = [
   { value: 'highestprice', label: 'Highest to lowest' }
 ];
 
-const Sort = ({ updateSort, sort }) => (
-  <div className="sort">
-    Order by
-    <Selectbox options={sortBy} handleOnChange={value => updateSort(value)} />
-  </div>
-);
-
-Sort.propTypes = {
-  updateSort: PropTypes.func.isRequired,
-  sort: PropTypes.string.isRequired
+const Sort = props => {
+  const { updateSort } = useSort();
+  return (
+    <div className="sort">
+      Order by
+      <Selectbox options={sortBy} handleOnChange={value => updateSort(value)} />
+    </div>
+  );
 };
 
-const mapStateToProps = state => ({
-  sort: state.sort.type
-});
-
-export default connect(
-  mapStateToProps,
-  { updateSort }
-)(Sort);
+export default Sort;

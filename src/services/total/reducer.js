@@ -1,6 +1,6 @@
 import { UPDATE_CART } from './actionTypes';
 
-const initialState = {
+export const initialState = {
   data: {
     productQuantity: 0,
     installments: 0,
