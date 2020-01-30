@@ -20,7 +20,7 @@ const Shelf = () => {
     fetchProducts().then(_ => {
       setIsloading(false);
     });
-  }, [filters, sort]);
+  }, [filters, sort, fetchProducts]);
 
   return (
     <React.Fragment>

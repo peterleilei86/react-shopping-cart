@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useShelf } from '../../services/shelf/context';
 
-const Selectbox = ({ options, classes, handleOnChange }) => {
+const Selectbox = ({ options }) => {
+  const { updateSort } = useShelf();
+
   const createOptions = options =>
     options.map(o => (
       <option value={o.value} key={o.value}>
@@ -10,16 +13,14 @@ const Selectbox = ({ options, classes, handleOnChange }) => {
     ));
 
   return (
-    <select onChange={e => handleOnChange(e.target.value)} className={classes}>
+    <select onChange={e => updateSort(e.target.value)}>
       {createOptions(options)}
     </select>
   );
 };
 
 Selectbox.propTypes = {
-  options: PropTypes.array.isRequired,
-  classes: PropTypes.string,
-  handleOnChange: PropTypes.func.isRequired
+  options: PropTypes.array.isRequired
 };
 
 export default Selectbox;

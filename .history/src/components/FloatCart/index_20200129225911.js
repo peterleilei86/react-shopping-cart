@@ -15,7 +15,7 @@ const FloatCart = () => {
       'cart',
       JSON.stringify({ cartProducts, total })
     );
-  }, [cartProducts]);
+  }, [cartProducts, updateTotal]);
 
   const proceedToCheckout = () => {
     const { totalPrice, productQuantity, currencyFormat, currencyId } = total;

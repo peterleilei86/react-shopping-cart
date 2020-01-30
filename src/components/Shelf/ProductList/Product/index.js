@@ -1,12 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
 import Thumb from '../../../Thumb';
 import { formatPrice } from '../../../../services/util';
-import { addProduct } from '../../../../services/cart/actions';
+import { useCart } from '../../../../services/cart/context';
 
-const Product = ({ product, addProduct }) => {
+const Product = ({ product }) => {
+  const { addProduct } = useCart();
   product.quantity = 1;
 
   let formattedPrice = formatPrice(product.price, product.currencyId);
@@ -55,12 +53,4 @@ const Product = ({ product, addProduct }) => {
   );
 };
 
-Product.propTypes = {
-  product: PropTypes.object.isRequired,
-  addProduct: PropTypes.func.isRequired
-};
-
-export default connect(
-  null,
-  { addProduct }
-)(Product);
+export default Product;
